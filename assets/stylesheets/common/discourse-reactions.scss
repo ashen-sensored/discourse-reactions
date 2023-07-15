@@ -5,29 +5,87 @@ html.discourse-reactions-no-select {
 }
 
 .discourse-reactions-list {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  display: grid;
+  grid-auto-flow: row;
+  grid-row-gap: 0.25rem;
+  grid-template-columns: repeat(auto-fill,minmax(100%,1fr));
+  text-indent: 0;
+  min-height: 0;
+  min-width: 0;
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+  position: relative;
+
 
   .reactions {
+    //display: flex;
+    //align-items: center;
+    justify-self: start;
+    -ms-flex-item-align: start;
+    align-self: start;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 0 auto;
+    flex: 1 0 auto;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-bottom: -0.5rem;
+    padding-bottom: 0.25rem;
 
-    .discourse-reactions-list-emoji {
-      border-radius: 100px;
-      width: 20px;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .discourse-reactions-list-dunit {
+      border-radius: 0.5rem;
+      cursor: pointer;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      margin-right: 0.25rem;
+      margin-bottom: 0.25rem;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-transition: none .1s ease;
+      transition: none .1s ease;
+      -webkit-transition-property: background-color,border-color;
+      transition-property: background-color,border-color;
+      background: var(--primary-very-low);
+      border: 1px solid transparent;
 
-      &:nth-of-type(1n + 4) {
-        display: none;
+      .reactionInner{
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        padding: 0.125rem 0.375rem;
+        position: relative;
+
+        .reactionCount{
+          font-size: 0.875rem;
+          font-weight: 600;
+          margin-left: 0.375rem;
+          text-align: center;
+          color: var(--interactive-normal);
+        }
       }
 
+      //&:nth-of-type(1n + 4) {
+      //  display: none;
+      //}
+
       .emoji {
-        width: 1.1em;
-        height: 1.1em;
+        width: 1rem;
+        height: 1rem;
+        margin: 0.125rem 0;
+        min-width: auto;
+        min-height: auto;
 
         &.desaturated {
           filter: grayscale(100%);
@@ -39,6 +97,8 @@ html.discourse-reactions-no-select {
       }
 
       &:hover {
+        background-color: var(--primary-low);
+        border-color: hsl(var(--white-500-hsl)/.2);
         .user-list {
           visibility: visible;
           opacity: 0.9;

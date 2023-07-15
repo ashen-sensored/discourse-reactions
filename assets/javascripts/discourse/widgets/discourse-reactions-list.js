@@ -13,7 +13,7 @@ export default createWidget("discourse-reactions-list", {
       h(
         "div.reactions",
         attrs.post.reactions.map((reaction) =>
-          this.attach("discourse-reactions-list-emoji", {
+          this.attach("discourse-reactions-list-dunit", {
             reaction,
             users: attrs.reactionsUsers[reaction.id],
             post: attrs.post,
