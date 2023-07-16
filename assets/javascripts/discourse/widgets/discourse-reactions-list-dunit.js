@@ -1,7 +1,6 @@
 import { createPopper } from "@popperjs/core";
 import { h } from "virtual-dom";
-import RawHtml from "discourse/widgets/raw-html";
-import { emojiUnescape } from "discourse/lib/text";
+
 import { createWidget } from "discourse/widgets/widget";
 import { schedule } from "@ember/runloop";
 import I18n from "I18n";
@@ -14,6 +13,22 @@ export default createWidget("discourse-reactions-list-dunit", {
 
   buildId: (attrs) =>
     `discourse-reactions-list-dunit-${attrs.post.id}-${attrs.reaction.id}`,
+
+  buildClasses(attrs) {
+
+    const postReacted = attrs.post.current_user_reaction;
+    const currentEmojiReacted = attrs.post.current_user_reaction?.id===attrs.reaction.id;
+    const classes = [];
+    if (postReacted) {
+      classes.push("post-reacted");
+    }
+    if (currentEmojiReacted) {
+      classes.push("current-emoji-reacted");
+    }
+    return classes;
+  },
+
+
 
   mouseOver() {
     if (!window.matchMedia("(hover: none)").matches) {
@@ -30,7 +45,6 @@ export default createWidget("discourse-reactions-list-dunit", {
       return;
     }
 
-    const reaction = attrs.reaction;
     const users = attrs.users || [];
     const displayUsers = [h("span.heading", attrs.reaction.id)];
 
@@ -61,18 +75,8 @@ export default createWidget("discourse-reactions-list-dunit", {
         );
       }
     }
-    const rawEmoji = new RawHtml({
-      html: emojiUnescape(`:${reaction.id}:`, {
-        skipTitle: true,
-        class: this.siteSettings
-          .discourse_reactions_desaturated_reaction_panel
-          ? "desaturated"
-          : "",
-      })
-    });
-    const emoji_part = h("div", rawEmoji);
-    const count_part = h("div.reactionCount", attrs.reaction.count.toString());
-    const reaction_inner = h("div.reactionInner", [emoji_part, count_part]);
+
+    const reaction_inner = this.attach("discourse-reactions-list-dunit-button",attrs);
 
     const elements = [
       reaction_inner

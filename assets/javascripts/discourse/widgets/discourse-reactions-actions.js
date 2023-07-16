@@ -498,6 +498,58 @@ export default createWidget("discourse-reactions-actions", {
     });
   },
 
+  toggleFromEmoji(attrs) {
+    if (!this.currentUser) {
+      return this.sendWidgetAction("showLogin");
+    }
+
+    this.collapseAllPanels();
+
+    const mainReactionName =
+      this.siteSettings.discourse_reactions_reaction_for_like;
+    const post = this.attrs.post;
+    const current_user_reaction = post.current_user_reaction;
+
+    if (
+      post.likeAction &&
+      !(post.likeAction.canToggle || post.likeAction.can_undo)
+    ) {
+      return;
+    }
+
+    if (
+      this.attrs.post.current_user_reaction &&
+      !this.attrs.post.current_user_reaction.can_undo
+    ) {
+      return;
+    }
+
+    if (!this.currentUser || post.user_id === this.currentUser.id) {
+      return;
+    }
+
+    if (this.capabilities.canVibrate) {
+      navigator.vibrate(VIBRATE_DURATION);
+    }
+
+    if (current_user_reaction && current_user_reaction.id === attrs.reaction) {
+      this.toggleReaction(attrs);
+      return CustomReaction.toggle(this.attrs.post, attrs.reaction).catch(
+        (e) => {
+          this.dialog.alert(this._extractErrors(e));
+          this._rollbackState(post);
+        }
+      );
+    }
+    this.toggleReaction(attrs);
+    return CustomReaction.toggle(this.attrs.post, attrs.reaction).catch(
+      (e) => {
+        this.dialog.alert(this._extractErrors(e));
+        this._rollbackState(post);
+      }
+    );
+  },
+
   cancelCollapse() {
     cancel(this._collapseHandler);
   },

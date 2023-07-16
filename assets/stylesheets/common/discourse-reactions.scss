@@ -3,6 +3,9 @@ html.discourse-reactions-no-select {
   -webkit-user-select: none; /* Disable text selection (for Webkit) */
   user-select: none; /* Disable text selection (standard syntax) */
 }
+:root {
+  --interactive-hover: rgb(219, 222, 225)
+}
 
 .discourse-reactions-list {
   display: grid;
@@ -57,6 +60,11 @@ html.discourse-reactions-no-select {
       background: var(--primary-very-low);
       border: 1px solid transparent;
 
+      &.current-emoji-reacted{
+        background-color: rgba(88, 101, 242, 0.15);
+        border-color: rgb(88, 101, 242)
+      }
+
       .reactionInner{
         display: -webkit-box;
         display: -ms-flexbox;
@@ -96,14 +104,33 @@ html.discourse-reactions-no-select {
         }
       }
 
+      //&:hover {
+      //  background-color: var(--primary-low);
+      //  border-color: hsl(var(--white-500-hsl)/.2);
+      //  .user-list {
+      //    visibility: visible;
+      //    opacity: 0.9;
+      //  }
+      //  .reactionCount{
+      //    color: var(--interactive-hover);
+      //  }
+      //}
+
       &:hover {
-        background-color: var(--primary-low);
-        border-color: hsl(var(--white-500-hsl)/.2);
         .user-list {
           visibility: visible;
           opacity: 0.9;
         }
       }
+
+      &:not(.post-reacted):hover {
+          background-color: var(--primary-low);
+          border-color: hsl(var(--white-500-hsl)/.2);
+          .reactionCount{
+            color: var(--interactive-hover);
+          }
+      }
+
     }
 
     .user-list {
